@@ -1,26 +1,11 @@
 //Data needed:
 import { getInitialData } from '../util/api.js'
-import { 
-    _saveQuestion,
-    _saveQuestionAnswer,
-    } from '../util/_DATA.js'
 
 //Actions Needed: 
-import { 
-    receiveUsers,
-    userAddAnswer,
-    userAddQuestion
-    } from '../actions/users'
+import { receiveUsers } from '../actions/users'
 
-import { 
-    receiveQuestions,
-    answerQuestion,
-    addQuestion
-} from '../actions/questions'
+import { receiveQuestions } from '../actions/questions'
 
-import { setAuthedUser } from '../actions/authedUser'
-
-//Just until I figerout how to set the authedUser:
 
 
 //This function is for handling the inital data when the app loads:
@@ -30,28 +15,5 @@ export function handleInitialData(){
             dispatch(receiveUsers(users))
             dispatch(receiveQuestions(questions))
         })
-    }
-}
-
-export function handleAnswerQuestion(qid, answer, authedUser){
-    return(dispatch) => {
-        _saveQuestionAnswer({authedUser, qid, answer})
-        .then(() => {
-            dispatch(answerQuestion(qid, authedUser, answer))
-            dispatch(userAddAnswer(qid, authedUser, answer))
-        })
-    }
-}
-
-export function handleAddQuestion(optionOne, optionTwo, authedUser, callback){
-    return(dispatch) => {
-        _saveQuestion({
-            optionOneText: optionOne,
-            optionTwoText: optionTwo,
-            author: authedUser,
-        }).then((question) => {
-            dispatch(userAddQuestion(question))
-            dispatch(addQuestion(question))
-        }).then(callback)
     }
 }

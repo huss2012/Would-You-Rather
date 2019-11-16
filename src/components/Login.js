@@ -1,46 +1,58 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { handleUserLogin } from '../actions/authedUser'
-import { Redirect } from 'react-router-dom'
+import { setAuthedUser } from '../actions/authedUser'
+
 
 class Login extends Component{
-    handleChange = (e) => {
+    state={
+        value: "",
+    }
+    
+    handleSubmit = (e) => {
         e.preventDefault()
-        dispatchEvent(handleUserLogin(e.target.value))
-        
+        const authedUser = this.state.value
+        authedUser === '' ? 
+            alert('Please Choose an Account Frist')
+        :
+            this.props.setAuthedUser(authedUser)
+    }
+    handleChange = (e) => {
+        this.setState({ value: e.target.value })
     }
     render() {
-        if(this.props.authedUser !== null){
-            return <Redirect to='/' />
-        }
+               
         return(
-            <div>
-                <h3>Welcome To The Would You Rather Game!</h3>
-                <form>
-                    <p>Log in as</p>
-                    <select>
-                        {
-                            //To iterate through the users in the _DATA to put them in the dropdown select:
-                            this.props.users.map((user) => (
-                                    <option key={user} value={user} onChange={this.handleChange}>
-                                        {user}
+           <div>
+               <div>
+                   <div>
+                       <form onSubmit={this.handleSubmit}>
+                           <h1>Welcome in Would You Rather Game!</h1>
+                            <h4>Please Choose an Account...</h4>
+                            <span>Log in as</span>
+                            <select onChange={this.handleChange} value={this.state.value}>
+                                <option defaultValue>Choose One...</option>
+                                {
+                                    this.props.users.map(user => (<option value={user.id} key={user.id}>
+                                        {user.id}
                                     </option>
-                            ))
-                        }
-                    </select>
-                    <button type='submit'>log in</button>
-                    
-                </form>
-            </div>
+                                    ))}
+                            </select>
+                            <button type='submit'>
+                                    Login!
+                            </button>
+                       </form>
+                   </div>
+               </div>
+           </div>
         )
     }
 }
 
 //bring the users from the store:
-function mapStateToProps({users, authedUser}){
+function mapStateToProps({ users }){
     return{
-        users: Object.keys(users),
-        authedUser: authedUser,
+        users: Object.values(users),
+        
     }
 }
-export default connect(mapStateToProps)(Login)
+export default connect(mapStateToProps, {setAuthedUser})(Login)

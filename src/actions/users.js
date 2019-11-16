@@ -1,8 +1,11 @@
-import { bindActionCreators } from "../../../../AppData/Local/Microsoft/TypeScript/3.6/node_modules/redux"
+import {saveQuestionAnswer} from '../util/api'
+import { answerQuestion } from '../actions/questions'
 
+
+export const RECEIVE_USERS = 'RECEIVE_USERS'
 export const USER_ADD_QUESTION = 'USER_ADD_QUESTION'
 export const USER_ADD_ANSWER = 'USER_ADD_ANSWER'
-export const RECEIVE_USERS = 'RECEIVE_USERS'
+
 
 
 
@@ -14,18 +17,30 @@ export function receiveUsers(users){
     }
 }
 
-export function userAddQuestion(question){
+export function userAddQuestion({ id, author }){
     return{
         type: USER_ADD_QUESTION,
-        question,
+        id,
+        author,
     }
 }
 
-export function userAddAnswer(qid, authedUser, answer){
+export function userAddAnswer(authedUser, qid, answer){
     return{
         type: USER_ADD_ANSWER,
         authedUser,
-        answer,
         qid,
+        answer,
+    }
+}
+
+
+export function handleSaveQuestionAnswer(authedUser, qid, answer){
+    return (dispatch) => {
+        dispatch(answerQuestion(authedUser, qid, answer))
+        dispatch(userAddAnswer(authedUser, qid, answer))
+        return saveQuestionAnswer(authedUser, qid, answer).catch(e => {
+            console.warn('Error in handleSaveQuestionAnswer', e)
+        })
     }
 }

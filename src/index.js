@@ -8,7 +8,6 @@ import { Tabs, Tab } from 'react-bootstrap'
 import { createStore } from 'redux'
 import { Provider } from 'react-redux'
 import Reducers from './reducers'
-import {  BrowserRouter } from 'react-router-dom'
 import middleware from './middleware'
 
 
@@ -16,7 +15,7 @@ const store = createStore(Reducers, middleware)
 
 
 ReactDOM.render(
-    <Provider store = {store} >
+    <Provider store = {store}>
             <App />
     </Provider>,
     document.getElementById('root'))

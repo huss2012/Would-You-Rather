@@ -1,14 +1,16 @@
-import React , { Component }from 'react'
+import React , { Component, Fragment }from 'react'
 import { connect } from 'react-redux'
-import { BrowserRouter as Router, Route } from 'react-router-dom'
+import { BrowserRouter as Router, Route, Switch, Redirect } from 'react-router-dom'
 import { handleInitialData } from '../actions/shared'
 import Home from './Home'
-import NewQuestion from './NewQuestion'
 import LeaderBoard from './LeaderBoard.js'
 import Nav from './Nav.js'
 import Login from './Login'
+import NewQuestion from './NewQuestion.js'
+import QuestionCard from './QuestionCard'
 
-//Components:
+
+
 
 
 class App extends Component{
@@ -18,25 +20,40 @@ class App extends Component{
   }
   render(){
     return(
-        <Router>
-          {this.props.login === true ?
-            <Login />
-          :
-            <div>
-              <Route to='/' exact component={Home}/>
-              <Route to='/new' exact component={NewQuestion}/>
-              <Route to='/leaderBoard' exact component={LeaderBoard}/>
-              <Route to='/' exact component={Home}/>
-            </div>
+      <Router>
+        <div>
+          {
+            this.props.authedUser === null ? 
+            (
+              <Route  component={Login}/>
+            ) 
+            : 
+            (
+              <Fragment>
+               <Nav/> 
+
+               <Switch>
+                 <Route exact path='/' component={Home} />
+                 <Route  path='/leaderboard' component={LeaderBoard} />
+                 <Route  path='/add' component={NewQuestion} />
+                 <Route  path='/questions/:question_id' component={QuestionCard}/>
+               </Switch>
+
+              </Fragment>
+            )
           }
-        </Router>
+        </div>
+
+
+
+      </Router>
     )
   }
 }
 
 function mapStateToProps({  authedUser }) {
   return{
-    login: authedUser === null
+    authedUser
   }
 }
 
