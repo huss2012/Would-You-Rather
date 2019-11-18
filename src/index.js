@@ -2,7 +2,6 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
 import App from './components/App';
-import { Tabs, Tab } from 'react-bootstrap'
 
 
 import { createStore } from 'redux'

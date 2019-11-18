@@ -1,5 +1,4 @@
-import { saveQuestion } from '../util/api'
-import { userAddQuestion } from '../actions/users'
+import {  _getQuestions } from '../util/_DATA'
 
 export const RECEIVE_QUESTIONS = 'RECEIVE_QUESTIONS'
 export const ADD_QUESTION = 'ADD_QUESTION'
@@ -20,20 +19,17 @@ export function addQuestion(question){
     }
 }
 
-export function answerQuestion( authedUser, qid, answer){
+export function answerQuestion(qid, authedUser, answer){
     return{
         type: ANSWER_QUESTION,
-        authedUser,
         qid,
+        authedUser,
         answer,
     }
 }
 
-export function handleSaveQuestion(optionOneText, optionTwoText, author){
-    return (dispatch) => {
-        return saveQuestion({optionOneText, optionTwoText, author}).then((question) => {
-            dispatch(addQuestion(question))
-            dispatch(userAddQuestion(question))
-        })
-    }
+export function handleGetQuestions(){
+    return dispatch => {(
+        _getQuestions().then((questions) => dispatch(receiveQuestions(questions)))
+    )}
 }

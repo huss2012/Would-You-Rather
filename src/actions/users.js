@@ -1,5 +1,4 @@
-import {saveQuestionAnswer} from '../util/api'
-import { answerQuestion } from '../actions/questions'
+import {  _getUsers } from '../util/_DATA'
 
 
 export const RECEIVE_USERS = 'RECEIVE_USERS'
@@ -17,30 +16,27 @@ export function receiveUsers(users){
     }
 }
 
-export function userAddQuestion({ id, author }){
+export function userAddQuestion(question){
     return{
         type: USER_ADD_QUESTION,
-        id,
-        author,
+        question,
     }
 }
 
-export function userAddAnswer(authedUser, qid, answer){
+export function userAddAnswer(qid, authedUser, answer){
     return{
         type: USER_ADD_ANSWER,
-        authedUser,
         qid,
+        authedUser,
         answer,
     }
 }
 
 
-export function handleSaveQuestionAnswer(authedUser, qid, answer){
-    return (dispatch) => {
-        dispatch(answerQuestion(authedUser, qid, answer))
-        dispatch(userAddAnswer(authedUser, qid, answer))
-        return saveQuestionAnswer(authedUser, qid, answer).catch(e => {
-            console.warn('Error in handleSaveQuestionAnswer', e)
+export function handleGetUsers() {
+    return dispatch => {
+        return _getUsers().then((users) => {
+            dispatch(receiveUsers(users))
         })
     }
 }

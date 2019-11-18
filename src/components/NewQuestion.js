@@ -1,55 +1,51 @@
  import React, { Component } from 'react'
  import { connect } from 'react-redux'
  import { Redirect } from 'react-router-dom'
- import { handleSaveQuestion } from '../actions/questions.js'
-
- import {  Button, Container } from 'react-bootstrap'
+ import { handleAddQuestion } from '../actions/shared'
 
 
  class NewQuestion extends Component{
      state={
          optionOneText: '',
          optionTwoText: '',
-         submitted: false,
+         questionSubmitted: false,
      }
 
-     handleSubmit = (event) => {
-         event.preventDefault()
-         const { authedUser, dispatch } = this.props
-         const { optionOneText, optionTwoText } = this.state
-         dispatch(handleSaveQuestion(optionOneText, optionTwoText, authedUser.id))
-         this.setState({submitted: true})
+     handleSubmitQuestion = (e) => {
+         e.preventDefault()
+         this.props.dispatch(handleAddQuestion(this.state.optionOneText, this.state.optionTwoText, this.props.authedUser.id.id))
+         this.setState({questionSubmitted: true})
      }
 
-     handleChange= (event) => {
-         event.preventDefault()
+     handlingChange= (e) => {
+         e.preventDefault()
          this.setState({
-             [event.target.name]: event.target.value
+             [e.target.name]: e.target.value
          })
      }
 
 
      render(){
-         if(this.state.submitted){
+         if(this.state.questionSubmitted){
              return <Redirect to='/' />
          }
          return(
-             <Container>
+             <div>
                  <h1>Would You Rather!</h1>
-                 <form onSubmit={this.handleSubmit}>
-                         <label>Option 1: </label>
+                 <form onSubmit={this.handleSubmitQuestion}>
+                         <label>The First Option: </label>
                          <input name='optionOneText'
                              defaultValue={this.state.optionOneText}
-                             onChange={this.handleChange}
+                             onChange={this.handlingChange}
                              placeholder='First Option' />
-                         <label>Option 2: </label>
+                         <label>The Second Option: </label>
                          <input  name='optionTwoText'
                              defaultValue={this.state.optionTwoText}
-                             onChange={this.handleChange}
+                             onChange={this.handlingChange}
                              placeholder='Second Option'/>
-                         <Button type='submit' className='button'>Submit</Button>
+                         <button type='submit'>Submit</button>
                  </form>
-             </Container>
+             </div>
          )
      }
  }

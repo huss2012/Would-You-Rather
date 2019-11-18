@@ -1,4 +1,3 @@
-import { Promise } from "q"
 
 let users = {
   sarahedo: {

@@ -1,58 +1,54 @@
+//packages needed: 
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { setAuthedUser } from '../actions/authedUser'
+
+
+import { handleUserLogin } from '../actions/authedUser'
 
 
 class Login extends Component{
     state={
-        value: "",
+    authedID: "",
     }
+    handlingTheUserChoose = (value) => {
+        this.setState(()=> ({
+                authedID: value
+        }))
+      }
     
-    handleSubmit = (e) => {
+      handlingSubmit = (e) => {
         e.preventDefault()
-        const authedUser = this.state.value
-        authedUser === '' ? 
-            alert('Please Choose an Account Frist')
-        :
-            this.props.setAuthedUser(authedUser)
-    }
-    handleChange = (e) => {
-        this.setState({ value: e.target.value })
-    }
+        this.props.dispatch(handleUserLogin(this.state.authedID))
+      }
+    
     render() {
-               
+        const { users } = this.props
         return(
            <div>
-               <div>
-                   <div>
-                       <form onSubmit={this.handleSubmit}>
-                           <h1>Welcome in Would You Rather Game!</h1>
-                            <h4>Please Choose an Account...</h4>
-                            <span>Log in as</span>
-                            <select onChange={this.handleChange} value={this.state.value}>
-                                <option defaultValue>Choose One...</option>
-                                {
-                                    this.props.users.map(user => (<option value={user.id} key={user.id}>
-                                        {user.id}
-                                    </option>
-                                    ))}
-                            </select>
-                            <button type='submit'>
-                                    Login!
-                            </button>
-                       </form>
-                   </div>
-               </div>
+                <form onSubmit={this.handlingSubmit}>
+                    <h1>Welcom to Would You Rather Game!!</h1>
+                    <h5>Please Choose an Account...</h5>
+                    <span> Log in as </span>
+                <select onChange={(e)=> this.handlingTheUserChoose(e.target.value)}>
+                    <option value> Choose One... </option>
+                    {
+                        users && Object.keys(users).map((user)=>
+                         <option key={user} value={user.id}>{user}</option>
+                    )}
+                </select>
+                <div>
+                    <input type="submit" value="Submit"/>
+                </div>
+                </form>
            </div>
         )
     }
 }
 
-//bring the users from the store:
-function mapStateToProps({ users }){
+
+function mapStateToProps({ users, }){
     return{
-        users: Object.values(users),
-        
+        users,
     }
 }
-export default connect(mapStateToProps, {setAuthedUser})(Login)
+export default connect(mapStateToProps)(Login)

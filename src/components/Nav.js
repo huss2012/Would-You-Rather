@@ -1,54 +1,45 @@
+//Packages Needed:
 import React, { Component } from 'react'
-
 import { connect } from 'react-redux'
+import { NavLink } from 'react-router-dom'
 
-import { NavLink, Link, Redirect } from 'react-router-dom'
-
-import { setAuthedUser } from '../actions/authedUser'
+import {handleUserLogout} from '../actions/authedUser'
 
 class Nav extends Component{
-
-    handleLogout= (e) => {
-        e.preventDefault()
-        this.props.setAuthedUser(null)
+    handlingUserLogout = () => {
+		this.props.dispatch(handleUserLogout())
     }
+    
     render(){
         return(
             <div>
-            <nav>
-                <div>
-                    <ul>
-                        <li>
-                            <Link name='home' as={NavLink} to='/' exact="true">
-                                Home
-                            </Link>
-                        </li>
-                        <li>
-                            <Link as={NavLink} to='/leaderboard'> 
-                                Leader Board
-                            </Link>
-                        </li>
-                        <li>
-                            <Link to='/add'>
-                                Add a Question
-                            </Link>
-                        </li>
-                    </ul>
-                    <div>Hello {this.props.authedUser}</div>
-                    <button onClick={this.handleLogout}>
-                            Logout
-                        </button>
-                </div>
-            </nav>
+                <ul>
+                    <li>
+                        <NavLink to='/'>
+                            Home
+                        </NavLink>
+                    </li>
+                    <li>
+                        <NavLink to='/add'>
+                            New Question
+                        </NavLink>
+                    </li>
+                    <li>
+                        <NavLink to='/leaderBoard'>
+                            LeaderBoard
+                        </NavLink>
+                    </li>
+                </ul>
+                <img alt={this.props.authedUser+' avatar'} src={this.props.authedUserAvatar}  style={{width: 111, height: 110, borderRadius: 60}}/>
+                <span>{this.props.authedUser}</span>
+                <button onClick={this.handlingUserLogout}>
+                         Logout
+                </button>
             </div>
         )
     }
 }
 
 
-function mapStateToProps({ authedUser }){
-    return{
-        authedUser: authedUser.id
-    }
-}
-export default connect( mapStateToProps, { setAuthedUser })(Nav)
+
+export default connect()(Nav)

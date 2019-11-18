@@ -1,13 +1,16 @@
-import React , { Component, Fragment }from 'react'
+import React , { Component }from 'react'
 import { connect } from 'react-redux'
-import { BrowserRouter as Router, Route, Switch, Redirect } from 'react-router-dom'
+import { BrowserRouter as Router, Route } from 'react-router-dom'
 import { handleInitialData } from '../actions/shared'
+
+
 import Home from './Home'
-import LeaderBoard from './LeaderBoard.js'
 import Nav from './Nav.js'
 import Login from './Login'
+import LeaderBoard from './LeaderBoard.js'
 import NewQuestion from './NewQuestion.js'
-import QuestionCard from './QuestionCard'
+import QuestionAnswers from './QuestionAnswers'
+import QuestionResults from './QuestionResults'
 
 
 
@@ -21,39 +24,27 @@ class App extends Component{
   render(){
     return(
       <Router>
-        <div>
-          {
-            this.props.authedUser === null ? 
-            (
-              <Route  component={Login}/>
-            ) 
-            : 
-            (
-              <Fragment>
-               <Nav/> 
-
-               <Switch>
-                 <Route exact path='/' component={Home} />
-                 <Route  path='/leaderboard' component={LeaderBoard} />
-                 <Route  path='/add' component={NewQuestion} />
-                 <Route  path='/questions/:question_id' component={QuestionCard}/>
-               </Switch>
-
-              </Fragment>
-            )
-          }
-        </div>
-
-
-
+      {!this.props.userID
+            ? <Login/> 
+            : <div style={{width:"100%"}}>
+                <Nav authedUser={this.props.authedUserName} authedUserAvatar={this.props.authedUserPhoto}/>
+                <Route path='/' exact component={Home} />
+                <Route path='/leaderBoard' component={LeaderBoard} />
+                <Route path='/add' component={NewQuestion} />
+                <Route path='/questions' component={QuestionAnswers} />
+                <Route path='/results' component={QuestionResults} />
+              </div>
+      }
       </Router>
     )
   }
 }
 
 function mapStateToProps({  authedUser }) {
-  return{
-    authedUser
+  return {
+    userID: authedUser !== null,
+    authedUserName: authedUser ? authedUser.id.name : '',
+    authedUserPhoto: authedUser ? authedUser.id.avatarURL : '',
   }
 }
 
