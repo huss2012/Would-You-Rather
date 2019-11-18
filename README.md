@@ -2,7 +2,7 @@
 
 This is the second project in React Nano-degree provided by Udacity which is a game that you have to answer the questions ethir option A or option B. 
 
-So to get start the project you have to do some steps: 
+So to get start the project you have to follow some steps: 
 
 * Clone the repo first by tiping in the tirmenal git clone repoURL.
 * Once the repo complitly down loaded  cd in to it.
