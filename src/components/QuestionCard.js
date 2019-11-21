@@ -4,7 +4,8 @@ import { connect } from 'react-redux'
 import { Link } from 'react-router-dom'
 
 //components needed:
-import Error404 from './Error404'
+import Error from './Error404'
+
  
 
 
@@ -12,7 +13,9 @@ import Error404 from './Error404'
  class QuestionCard extends Component{
     
      render(){
-        const linkToResult = "/results/" + this.props.qid
+       console.log('This is the Question Card: ', this.props)
+       const { qid } = this.props
+        const linkToResult = "/results/" + qid
         const linkToQuestion = "/questions/" + this.props.qid
         let isQuestionAnswered
         if(this.props.answers[this.props.qid] === undefined){
@@ -22,7 +25,7 @@ import Error404 from './Error404'
           isQuestionAnswered = true
         }
         if (!this.props.qid){
-          return <Error404/>
+          return <Error/>
         }
          return(
             <div>
@@ -33,8 +36,9 @@ import Error404 from './Error404'
                   {this.props.questionOptionOne} or {this.props.questionOptionTwo}
                   </div>
                     {isQuestionAnswered ?
-                    <Link to={linkToResult}>Show Results</Link>:
-                    <Link to={linkToQuestion}>Show Question</Link>
+                    <Link to={linkToResult}>Show Results...!</Link>
+                    :
+                    <Link to={linkToQuestion}>Show The Question info....!</Link>
                     }
             </div>
          )

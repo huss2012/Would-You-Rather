@@ -7,13 +7,12 @@
  import QuestionCard from './QuestionCard'
 
 
-
  class Home extends Component{
      render(){
          console.log('The authedUser Id is : ', this.props)
         
          return(
-            <Tabs defaultActiveKey={1} id="questionsTab">
+            <Tabs defaultActiveKey={1}>
                 <Tab eventKey={1} title="Unanswered-Questions">
                     <ul>
                         {this.props.unanswered.map((id)=>(

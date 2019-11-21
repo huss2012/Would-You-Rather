@@ -59,13 +59,13 @@ class QuestionResultsCard extends Component{
     }
 }
 
-function mapStateToProps({ questions, users, authedUser }, qid){
+function mapStateToProps({ questions, users, authedUser }, {qid}){
     return {
     	answers: authedUser.id.answers,
     	questions,
     	qid,
        	authedUser,
-       	users
+		users,
     }
 }
 

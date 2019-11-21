@@ -11,6 +11,7 @@ import LeaderBoard from './LeaderBoard.js'
 import NewQuestion from './NewQuestion.js'
 import QuestionAnswers from './QuestionAnswers'
 import QuestionResults from './QuestionResults'
+import Error  from './Error404'
 
 
 
@@ -33,6 +34,7 @@ class App extends Component{
                 <Route path='/add' component={NewQuestion} />
                 <Route path='/questions' component={QuestionAnswers} />
                 <Route path='/results' component={QuestionResults} />
+                <Route path='/questions/Error' component={Error}/>
               </div>
       }
       </Router>

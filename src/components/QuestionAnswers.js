@@ -4,7 +4,7 @@ import { Redirect } from 'react-router-dom'
 import { handleAnswerQuestion } from '../actions/shared'
 
 
-import Error404 from './Error404'
+import Error from './Error404'
 
 
 class QuestionAnswers extends Component{
@@ -30,19 +30,19 @@ class QuestionAnswers extends Component{
     }
     render(){
 		const splitPath = this.props.location.pathname.split('/')
-		const qid = splitPath[2]
-		const author = this.props.users[this.props.questions[qid].author].name
+        const qid = splitPath[2]
+        if (this.props.questions[qid] === undefined){
+		    return <Error/>
+        }
+        const author = this.props.users[this.props.questions[qid].author].name
 		const Avatar = this.props.users[this.props.questions[qid].author].avatarURL
 		const timestamp = this.props.questions[qid].timestamp
-		if (this.props.questions[qid] === undefined){
-		    return <Error404/>
-		}
 		if (this.state.answerIsSubmitted === true) {
             return <Redirect to={`/results/${qid}`}/>;
         }
         return(
-            <div>
-                <img alt={author} src={Avatar} style={{width: 111, height: 110, borderRadius: 60}}/>
+                <div>
+                    <img alt={author} src={Avatar} style={{width: 111, height: 110, borderRadius: 60}}/>
                 <div>
                     <h5>Asked By:{author}</h5>
                 </div>
@@ -63,19 +63,19 @@ class QuestionAnswers extends Component{
 				</div>
                 <button onClick={(event) => this.handleSubmit(event,qid)}> Submit Answer</button>
 
-            </div>
-            
+                </div>
+                
         )
     }
 }
 
-function mapStateToProps({ questions, users, authedUser}, qid){
+function mapStateToProps({ questions, users, authedUser}, {qid}){
     return {
     	answers: authedUser.id.answers,
-    	questions,
-    	qid,
+        questions,
+        qid,
        	authedUser,
-       	users
+        users,   
     }
 }
 
